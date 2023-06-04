@@ -8,14 +8,18 @@ spec:
     app: {{.Chart.Name}}
   ports:
     - port: {{.Values.config.qbittorrent.port}}
+      name: qbittorrent
       protocol: TCP
       targetPort: 8080
     - port: {{.Values.config.radarr.port}}
+      name: radarr
       protocol: TCP
       targetPort: 7878
     - port: {{.Values.config.sonarr.port}}
+      name: sonarr
       protocol: TCP
       targetPort: 8989
     - port: {{.Values.config.prowlarr.port}}
+      name: prowlarr
       protocol: TCP
       targetPort: 9696

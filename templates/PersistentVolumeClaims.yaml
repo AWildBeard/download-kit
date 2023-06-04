@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{.Chart.Name}}-data
 spec:
-  storageClass: {{.Values.storage.data.storageClass}}
+  storageClassName: {{.Values.storage.data.storageClass}}
   accessModes: {{.Values.storage.data.accessModes}}
   resources:
     requests:
@@ -14,9 +14,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{.Chart.Name}}-qbittorrent-config
 spec:
-  storageClass: {{.Values.storage.configs.storageClass}}
-  accessModes:
-    - ReadWriteOnce
+  storageClassName: {{.Values.storage.configs.storageClass}}
+  accessModes: {{.Values.storage.configs.accessModes}}
   resources:
     requests:
       storage: {{.Values.storage.configs.size}}
@@ -26,9 +25,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{.Chart.Name}}-radarr-config
 spec:
-  storageClass: {{.Values.storage.configs.storageClass}}
-  accessModes:
-    - ReadWriteOnce
+  storageClassName: {{.Values.storage.configs.storageClass}}
+  accessModes: {{.Values.storage.configs.accessModes}}
   resources:
     requests:
       storage: {{.Values.storage.configs.size}}
@@ -38,9 +36,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{.Chart.Name}}-sonarr-config
 spec:
-  storageClass: {{.Values.storage.configs.storageClass}}
-  accessModes:
-    - ReadWriteOnce
+  storageClassName: {{.Values.storage.configs.storageClass}}
+  accessModes: {{.Values.storage.configs.accessModes}}
   resources:
     requests:
       storage: {{.Values.storage.configs.size}}
@@ -50,9 +47,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{.Chart.Name}}-prowlarr-config
 spec:
-  storageClass: {{.Values.storage.configs.storageClass}}
-  accessModes:
-    - ReadWriteOnce
+  storageClassName: {{.Values.storage.configs.storageClass}}
+  accessModes: {{.Values.storage.configs.accessModes}}
   resources:
     requests:
       storage: {{.Values.storage.configs.size}}

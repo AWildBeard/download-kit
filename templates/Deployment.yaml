@@ -30,24 +30,24 @@ spec:
         ##      /tv
         - name: data
           persistentVolumeClaim:
-            claimName: media-data
+            claimName: {{.Chart.Name}}-data
 
         ## Config Volumes
         - name: qbittorrent-config
           persistentVolumeClaim:
-            claimName: qbittorrent-config
+            claimName: {{.Chart.Name}}-qbittorrent-config
 
         - name: radarr-config
           persistentVolumeClaim:
-            claimName: radarr-config
+            claimName: {{.Chart.Name}}-radarr-config
 
         - name: sonarr-config
           persistentVolumeClaim:
-            claimName: sonarr-config
+            claimName: {{.Chart.Name}}-sonarr-config
 
         - name: prowlarr-config
           persistentVolumeClaim:
-            claimName: prowlarr-config
+            claimName: {{.Chart.Name}}-prowlarr-config
 
         ## Wireguard config
         - name: wg-config

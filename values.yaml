@@ -3,6 +3,8 @@ storage:
     size: 1Gi
     # Leave blank for default
     storageClass: ""
+    accessModes:
+      - ReadWriteOnce
   data:
     size: 2Ti
     # Leave blank for default
@@ -45,6 +47,3 @@ config:
 service:
   type: ClusterIP
   name: download-kit
-
-
-

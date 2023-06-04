@@ -1,0 +1,50 @@
+storage:
+  configs:
+    size: 1Gi
+    # Leave blank for default
+    storageClass: ""
+  data:
+    size: 2Ti
+    # Leave blank for default
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+
+config:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard
+    tag: 1.0.20210914
+    # This must be a secret in the namespace with the key `wg0` where the value is
+    # the config file you want to use
+    secretConfig: wireguard-config
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    tag: 4.5.3
+    ## Port on the 'service' where qbittorrent can be accessed
+    port: 8080
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    tag: 4.5.2
+    ## Port on the 'service' where radarr can be accessed
+    port: 7878
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    tag: 3.0.10
+    ## Port on the 'service' where sonarr can be accessed
+    port: 8989
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr
+    tag: 1.4.1
+    ## Port on the 'service' where prowlarr can be accessed
+    port: 9696
+
+service:
+  type: ClusterIP
+  name: download-kit
+
+
+

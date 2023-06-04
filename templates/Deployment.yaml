@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      name: {{ .Chart.Name }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        sysctls:
+          - name: net.ipv4.conf.all.src_valid_mark
+            value: '1'
+      volumes:
+        ## data;
+        ## /
+        ##    /torrents
+        ##    /media
+        ##      /movies
+        ##      /tv
+        - name: data
+          persistentVolumeClaim:
+            claimName: media-data
+
+        ## Config Volumes
+        - name: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config
+
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config
+
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonarr-config
+
+        - name: prowlarr-config
+          persistentVolumeClaim:
+            claimName: prowlarr-config
+
+        ## Wireguard config
+        - name: wg-config
+          secret:
+            secretName: {{.Values.config.wireguard.secretConfig}}
+
+      initContainers:
+        - image: quay.io/awildbeard/scriptable:latest
+          name: bootstrap-data
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          args:
+            - /bin/bash
+            - -c
+            - "mkdir -p /data/{torrents,media/{movies,tv}} || exit 0"
+
+      containers:
+        - image: {{.Values.config.wireguard.image}}:{{.Values.config.wireguard.tag}}
+          name: wireguard
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /config
+              name: wg-config
+
+        - image: {{.Values.config.qbittorrent.image}}:{{.Values.config.qbittorrent.tag}}
+          name: qbittorrent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: WEBUI_PORT
+              value: "8080"
+          volumeMounts:
+            - name: data
+              subPath: ./torrents
+              mountPath: /downloads
+            - name: qbittorrent-config
+              mountPath: /config
+
+        - image: {{.Values.config.radarr.image}}:{{.Values.config.radarr.tag}}
+          name: radarr
+          ports:
+            - containerPort: 7878
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: radarr-config
+              mountPath: /config
+
+        - image: {{.Values.config.sonarr.image}}:{{.Values.config.sonarr.tag}}
+          name: sonarr
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: sonarr-config
+              mountPath: /config
+
+        - image: {{.Values.config.prowlarr.image}}:{{.Values.config.prowlarr.tag}}
+          name: prowlarr
+          ports:
+            - containerPort: 9696
+              protocol: TCP
+          volumeMounts:
+            - name: prowlarr-config
+              mountPath: /config

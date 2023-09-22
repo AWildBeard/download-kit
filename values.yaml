@@ -1,12 +1,9 @@
+## where to store downloaded media
+existingClaimName: download-kit-data
+
 storage:
   configs:
     size: 1Gi
-    # Leave blank for default
-    storageClass: ""
-    accessModes:
-      - ReadWriteOnce
-  data:
-    size: 2Ti
     # Leave blank for default
     storageClass: ""
     accessModes:

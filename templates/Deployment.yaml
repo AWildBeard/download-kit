@@ -30,7 +30,7 @@ spec:
         ##      /tv
         - name: data
           persistentVolumeClaim:
-            claimName: {{.Chart.Name}}-data
+            claimName: {{.Values.existingClaimName}}
 
         ## Config Volumes
         - name: qbittorrent-config

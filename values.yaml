@@ -43,4 +43,5 @@ config:
 
 service:
   type: ClusterIP
+  loadBalancerClass: "" # Only used if type is LoadBalancer
   name: download-kit

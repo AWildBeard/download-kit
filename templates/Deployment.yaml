@@ -28,6 +28,7 @@ spec:
         ##    /media
         ##      /movies
         ##      /tv
+        ##      /anime
         - name: data
           persistentVolumeClaim:
             claimName: {{.Values.existingClaimName}}
@@ -45,9 +46,17 @@ spec:
           persistentVolumeClaim:
             claimName: {{.Chart.Name}}-sonarr-config
 
+        - name: sonarr-anime-config
+          persistentVolumeClaim:
+            claimName: {{.Chart.Name}}-sonarr-anime-config
+
         - name: prowlarr-config
           persistentVolumeClaim:
             claimName: {{.Chart.Name}}-prowlarr-config
+
+        - name: bazarr-config
+          persistentVolumeClaim:
+            claimName: {{.Chart.Name}}-bazarr-config
 
         ## Wireguard config
         - name: wg-config
@@ -63,7 +72,7 @@ spec:
           args:
             - /bin/bash
             - -c
-            - "mkdir -p /data/{torrents,media/{movies,tv}} || exit 0"
+            - "mkdir -p /data/{torrents,media/{movies,tv,anime}} || exit 0"
 
       containers:
         - image: {{.Values.config.wireguard.image}}:{{.Values.config.wireguard.tag}}
@@ -78,6 +87,10 @@ spec:
 
         - image: {{.Values.config.qbittorrent.image}}:{{.Values.config.qbittorrent.tag}}
           name: qbittorrent
+          securityContext:
+            capabilities:
+              Drop:
+                - ALL
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -93,6 +106,10 @@ spec:
 
         - image: {{.Values.config.radarr.image}}:{{.Values.config.radarr.tag}}
           name: radarr
+          securityContext:
+            capabilities:
+              Drop:
+                - ALL
           ports:
             - containerPort: 7878
               protocol: TCP
@@ -104,6 +121,10 @@ spec:
 
         - image: {{.Values.config.sonarr.image}}:{{.Values.config.sonarr.tag}}
           name: sonarr
+          securityContext:
+            capabilities:
+              Drop:
+                - ALL
           ports:
             - containerPort: 8989
               protocol: TCP
@@ -113,11 +134,48 @@ spec:
             - name: sonarr-config
               mountPath: /config
 
+        - image: {{.Values.config.sonarr.image}}:{{.Values.config.sonarr.tag}}
+          name: sonarr-anime
+          securityContext:
+            capabilities:
+              Drop:
+                - ALL
+          env:
+            - name: SONARR_SERVER_PORT
+              value: 8990
+          ports:
+            - containerPort: 8990
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: sonarr-anime-config
+              mountPath: /config
+
         - image: {{.Values.config.prowlarr.image}}:{{.Values.config.prowlarr.tag}}
           name: prowlarr
+          securityContext:
+            capabilities:
+              Drop:
+                - ALL
           ports:
             - containerPort: 9696
               protocol: TCP
           volumeMounts:
             - name: prowlarr-config
+              mountPath: /config
+
+        - image: {{.Values.config.bazarr.image}}:{{.Values.config.bazarr.tag}}
+          name: bazarr
+          securityContext:
+            capabilities:
+              Drop:
+                - ALL
+          ports:
+            - containerPort: 6767
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: bazarr-config
               mountPath: /config

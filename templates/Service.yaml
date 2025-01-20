@@ -22,7 +22,15 @@ spec:
       name: sonarr
       protocol: TCP
       targetPort: 8989
+    - port: {{.Values.config.sonarr-anime.port}}
+      name: sonarr
+      protocol: TCP
+      targetPort: 8990
     - port: {{.Values.config.prowlarr.port}}
       name: prowlarr
       protocol: TCP
       targetPort: 9696
+    - port: {{.Values.config.bazarr.port}}
+      name: bazarr
+      protocol: TCP
+      targetPort: 6767

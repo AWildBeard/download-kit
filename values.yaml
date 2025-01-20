@@ -35,11 +35,22 @@ config:
     ## Port on the 'service' where sonarr can be accessed
     port: 8989
 
+  sonarr-anime:
+    image: lscr.io/linuxserver/sonarr
+    tag: 3.0.10
+    ## Port on the 'service' where sonarr can be accessed
+    port: 8989
+
   prowlarr:
     image: lscr.io/linuxserver/prowlarr
     tag: 1.4.1
     ## Port on the 'service' where prowlarr can be accessed
     port: 9696
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    tag: version-v1.5.1
+    port: 6767
 
 service:
   type: ClusterIP

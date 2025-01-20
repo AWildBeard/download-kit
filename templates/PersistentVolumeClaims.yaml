@@ -34,7 +34,29 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: {{.Chart.Name}}-sonarr-anime-config
+spec:
+  storageClassName: {{.Values.storage.configs.storageClass}}
+  accessModes: {{.Values.storage.configs.accessModes}}
+  resources:
+    requests:
+      storage: {{.Values.storage.configs.size}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: {{.Chart.Name}}-prowlarr-config
+spec:
+  storageClassName: {{.Values.storage.configs.storageClass}}
+  accessModes: {{.Values.storage.configs.accessModes}}
+  resources:
+    requests:
+      storage: {{.Values.storage.configs.size}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{.Chart.Name}}-bazarr-config
 spec:
   storageClassName: {{.Values.storage.configs.storageClass}}
   accessModes: {{.Values.storage.configs.accessModes}}

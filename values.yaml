@@ -39,7 +39,7 @@ config:
     image: lscr.io/linuxserver/sonarr
     tag: 3.0.10
     ## Port on the 'service' where sonarr can be accessed
-    port: 8989
+    port: 8990
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr

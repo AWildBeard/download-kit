@@ -141,7 +141,7 @@ spec:
               Drop:
                 - ALL
           env:
-            - name: SONARR_SERVER_PORT
+            - name: SONARR_PORT
               value: "8990"
           ports:
             - containerPort: 8990

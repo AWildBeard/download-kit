@@ -142,7 +142,7 @@ spec:
                 - ALL
           env:
             - name: SONARR_SERVER_PORT
-              value: 8990
+              value: "8990"
           ports:
             - containerPort: 8990
               protocol: TCP
